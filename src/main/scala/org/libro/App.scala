@@ -1,4 +1,4 @@
-package org.example
+package org.libro
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
@@ -21,7 +21,6 @@ object App {
 
 
     import spark.implicits._
-
     val df = spark.createDataFrame(List(("A",1),("B",2),("C",3)))
     val df2 = Seq((1,"Uno"),(2,"Dos"),(3,"Tres")).toDF("Numero","String")
     df2.show()
