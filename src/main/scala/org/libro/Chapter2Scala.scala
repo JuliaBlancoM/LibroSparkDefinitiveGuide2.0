@@ -6,22 +6,30 @@ import org.apache.spark.sql.functions._
 //Ejercicio MnMs
 object Chapter2Scala {
   def main(args: Array[String]) {
+    println(s"========================================================\n${args.length}\n========================================================")
     val spark = SparkSession
       .builder
       .appName("LibroSpark")
       .master("local[2]")
       .getOrCreate()
-    /*if (args.length < 1) {
-      print("Usage: Chapter2Scala <mnm_file_dataset>")
-      sys.exit(1)
-    }*/
+    def getPath():String={
+      if (args.length < 1) {
+        //print("Usage: Chapter2Scala <mnm_file_dataset>")
+        //sys.exit(1)"
+        "src/main/resources/mnm_dataset.csv"
+      }
+      else {
+        args(0)
+      }
+    }
     // Get the M&M data set filename
-    //val mnmFile = args(0)
+    val mnmFile = getPath()
     // Read the file into a Spark DataFrame
+    spark.sparkContext.setLogLevel("ERROR")
     val mnmDF = spark.read.format("csv")
       .option("header", "true")
       .option("inferSchema", "true")
-      .load("src/main/resources/mnm_dataset.csv")
+      .load(mnmFile)
     // Aggregate counts of all colors and groupBy() State and Color
     // orderBy() in descending order
     val countMnMDF = mnmDF
