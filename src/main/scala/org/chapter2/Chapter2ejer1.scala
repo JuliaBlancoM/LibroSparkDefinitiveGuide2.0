@@ -1,10 +1,10 @@
-package org.libro
+package org.chapter2
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 //Ejercicio MnMs
-object Chapter2 {
+object Chapter2ejer1 {
   def main(args: Array[String]) {
     println(s"========================================================\n${args.length}\n========================================================")
     val spark = SparkSession
