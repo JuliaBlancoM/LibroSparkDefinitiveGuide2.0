@@ -4,7 +4,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 
 //Ejercicio MnMs
-object Chapter2Scala {
+object Chapter2 {
   def main(args: Array[String]) {
     println(s"========================================================\n${args.length}\n========================================================")
     val spark = SparkSession
