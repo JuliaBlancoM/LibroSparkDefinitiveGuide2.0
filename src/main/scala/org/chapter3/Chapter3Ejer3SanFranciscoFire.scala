@@ -81,10 +81,90 @@ object Chapter3Ejer3SanFranciscoFire {
       .withColumn("AvailableDtTS", to_timestamp(col("AvailableDtTm"),
         "MM/dd/yyyy hh:mm:ss a"))
       .drop("AvailableDtTm")
+
+    fireTsDF.cache()
+    fireTsDF.columns
+
     // Select the converted columns
     fireTsDF
       .select("IncidentDate", "OnWatchDate", "AvailableDtTS")
       .show(5, false)
+
+    fireTsDF
+      .select(year($"IncidentDate"))
+      .distinct()
+      .orderBy(year($"IncidentDate"))
+      .show()
+
+    fireTsDF
+      .select("CallType")
+      .where(col("CallType").isNotNull)
+      .groupBy("CallType")
+      .count()
+      .orderBy(desc("count"))
+      .show(10, false)
+
+    import org.apache.spark.sql.{functions => F}
+    fireTsDF
+      .select(F.sum("NumAlarms"), F.avg("ResponseDelayedinMins"),
+        F.min("ResponseDelayedinMins"), F.max("ResponseDelayedinMins"))
+      .show()
+
+    // Questions from page 68
+    // What were all the different types of fire calls in 2018?
+    fireTsDF
+      .filter(year($"IncidentDate") === 2018)
+      .select("CallType")
+      .where(col("CallType").isNotNull)
+      .distinct()
+      .show()
+    // What months within the year 2018 saw the highest number of fire calls?
+    fireTsDF
+      .filter(year($"IncidentDate") === 2018)
+      .groupBy(month($"IncidentDate"))
+      .count()
+      .orderBy(desc("count"))
+      .show()
+
+    // Which neighborhood in San Francisco generated the most fire calls in 2018?
+    fireTsDF
+      .filter(year($"IncidentDate") === 2018)
+      .groupBy("Neighborhood")
+      .count()
+      .orderBy(desc("count"))
+      .show(1)
+
+    // Which neighborhoods had the worst response times to fire calls in 2018?
+    fireTsDF
+      .select("Neighborhood", "ResponseDelayedinMins")
+      .filter(year($"IncidentDate") === 2018)
+      .orderBy(desc("ResponseDelayedinMins"))
+      .show()
+    // Which week in the year in 2018 had the most fire calls?
+    fireTsDF
+      .filter(year($"IncidentDate") === 2018)
+      .groupBy(weekofyear($"IncidentDate"))
+      .count()
+      .orderBy(desc("count"))
+      .show()
+    // Is there a correlation between neighborhood, zip code, and number of fire calls?
+    fireTsDF
+      .select("Neighborhood", "ZipCode")
+      .groupBy("Neighborhood", "Zipcode")
+      .count()
+      .orderBy(desc("count"))
+      .show(10, false)
+    //How can we use Parquet files or SQL tables to store this data and read it back?
+    /*
+    fireTsDF
+      .write
+      .format("parquet")
+      .mode("overwrite")
+      .save("/src/main/resources/fireServiceParquet/")
+
+      %fs ls /tmp/fireServiceParquet/
+      */
+
 
   }
 
