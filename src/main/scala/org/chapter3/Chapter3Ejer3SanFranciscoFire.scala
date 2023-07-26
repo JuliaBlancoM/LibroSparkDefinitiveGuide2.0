@@ -15,8 +15,8 @@ object Chapter3Ejer3SanFranciscoFire {
       StructField("UnitID", StringType, true),
       StructField("IncidentNumber", IntegerType, true),
       StructField("CallType", StringType, true),
-      StructField("WatchDate", StringType, true),
-      StructField("CallType", StringType, true),
+      StructField("CallDate", StringType, true),
+      StructField("WatchDateCallType", StringType, true),
       StructField("CallFinalDisposition", StringType, true),
       StructField("AvailableDtTm", StringType,true),
       StructField("Address", StringType,true),
@@ -40,7 +40,7 @@ object Chapter3Ejer3SanFranciscoFire {
       StructField("RowID", StringType,true),
       StructField("Delay", FloatType,true)))
     // Read the file using the CSV DataFrameReader
-    val sfFireFile = "src/main/resources/Fire_Incidents.csv"
+    val sfFireFile = "src/main/resources/sf-fire-calls.csv"
     val fireDF = spark.read.schema(fireSchema)
       .option("header", "true")
       .csv(sfFireFile)
@@ -50,11 +50,43 @@ object Chapter3Ejer3SanFranciscoFire {
 
     /*val parquetTable = "Fire_Incidents_Table"
     fireDF.write.format("parquet").saveAsTable(parquetTable)*/
+
     val fewFireDF = fireDF
-      //.select("IncidentNumber", "AvailableDtTm", "Address")
-      //.where($"CallType" =!= "Medical Incident")
+      .select("IncidentNumber", "AvailableDtTm", "CallType")
+      .where($"CallType" =!= "Medical Incident")
     fewFireDF.show(5, false)
+
+    fireDF
+      .select("CallType")
+      .where(col("CallType").isNotNull)
+      .agg(countDistinct("CallType") as "DistinctCallTypes")
+      .show()
+    fireDF
+      .select("CallType")
+      .where(col("CallType").isNotNull)
+      .distinct()
+      .show(10, false)
+
+    val newFireDF = fireDF.withColumnRenamed("Delay", "ResponseDelayedinMins")
+    newFireDF
+      .select("ResponseDelayedinMins")
+      .where($"ResponseDelayedinMins" > 5)
+      .show(5, false)
+
+    val fireTsDF = newFireDF
+      .withColumn("IncidentDate", to_timestamp(col("CallDate"), "MM/dd/yyyy"))
+      .drop("CallDate")
+      .withColumn("OnWatchDate", to_timestamp(col("WatchDateCallType"), "MM/dd/yyyy"))
+      .drop("WatchDateCallType")
+      .withColumn("AvailableDtTS", to_timestamp(col("AvailableDtTm"),
+        "MM/dd/yyyy hh:mm:ss a"))
+      .drop("AvailableDtTm")
+    // Select the converted columns
+    fireTsDF
+      .select("IncidentDate", "OnWatchDate", "AvailableDtTS")
+      .show(5, false)
 
   }
 
 }
+
