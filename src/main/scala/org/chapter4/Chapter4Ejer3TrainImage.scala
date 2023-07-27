@@ -16,17 +16,24 @@ object Chapter4Ejer3TrainImage {
     import spark.implicits._
 
 
-    println(spark.version)
+    /*println(spark.version)
 
     val imageDir = "src/main/resources/train_images/"
     val imagesDF = spark.read.format("image").load(imageDir)
 
+    imagesDF.printSchema
+    imagesDF.select("image.height", "image.width", "image.nChannels", "image.mode",
+      "label").show(5, false)
 
-
-
-
-
-
+    */
+    //Con la lectura de Binary Files también me encuentro problemas relacionados con incompatibilidad entre Windows y Hadoop así que lo dejo comentado
+    /*
+    val path = "src/main/resources/train_images/"
+    val binaryFilesDF = spark.read.format("binaryFile")
+      .option("pathGlobFilter", "*.jpg")
+      .load(path)
+    binaryFilesDF.show(5)
+    */
 
   }
 
