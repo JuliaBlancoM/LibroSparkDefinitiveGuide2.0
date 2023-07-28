@@ -113,6 +113,23 @@ object Chapter5Ejer1 {
     GROUP BY celsius
     """).show()
 
+    //ERROR REDUCE
+    /*
+
+    spark.sql(
+      """
+    SELECT celsius,
+           reduce(
+              celsius,
+              0,
+              (t, acc) -> t + acc,
+              acc -> (acc div size(celsius) * 9 div 5) + 32
+            ) as avgFahrenheit
+      FROM tC
+    """).show()
+
+    */
+
 
 
 
