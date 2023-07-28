@@ -123,9 +123,33 @@ object Chapter5Ejer2Flights {
 
     //Pivoting
 
-    
+    spark.sql("""SELECT destination, CAST(SUBSTRING(date, 0, 2) AS int) AS month, delay FROM departureDelays WHERE origin = 'SEA'""").show(10)
 
+    spark.sql(
+      """
+    SELECT * FROM (
+    SELECT destination, CAST(SUBSTRING(date, 0, 2) AS int) AS month, delay
+      FROM departureDelays WHERE origin = 'SEA'
+    )
+    PIVOT (
+      CAST(AVG(delay) AS DECIMAL(4, 2)) as AvgDelay, MAX(delay) as MaxDelay
+      FOR month IN (1 JAN, 2 FEB, 3 MAR)
+    )
+    ORDER BY destination
+    """).show()
 
+    spark.sql(
+      """
+    SELECT * FROM (
+    SELECT destination, CAST(SUBSTRING(date, 0, 2) AS int) AS month, delay
+      FROM departureDelays WHERE origin = 'SEA'
+    )
+    PIVOT (
+      CAST(AVG(delay) AS DECIMAL(4, 2)) as AvgDelay, MAX(delay) as MaxDelay
+      FOR month IN (1 JAN, 2 FEB)
+    )
+    ORDER BY destination
+    """).show()
 
   }
 
