@@ -8,17 +8,18 @@ import org.apache.spark.sql.functions._
 object Chapter4Ejer2departuredelays {
 
   def main(args: Array[String]): Unit = {
-    val spark = SparkSession
-      .builder
-      .appName("Chapter3Ejer2")
-      .master("local[2]")
+    val spark = new SparkSession.Builder()
+      .config("spark.sql.warehouse.dir", "C:\\spark-warehouse")
+      .appName("DataFrame comparator")
+      .master("local[*]")
+      .enableHiveSupport()
       .getOrCreate()
     import spark.implicits._
 
 
 
     //El resto lo dejo comentado porque no tengo un HADOOP_HOME
-  /*
+
 
     val df = spark
       .read
@@ -28,7 +29,10 @@ object Chapter4Ejer2departuredelays {
       .option("path", "src/main/resources/departuredelays.csv")
       .load()
 
-    spark.sql("CREATE DATABASE learn_spark_db")
+
+    df.write.saveAsTable("delays")
+
+   /* spark.sql("CREATE DATABASE learn_spark_db")
     spark.sql("USE learn_spark_db")
 
     df.write.format("parquet")
@@ -36,7 +40,7 @@ object Chapter4Ejer2departuredelays {
       .option("compression", "snappy")
       .save("/tmp/data/parquet/df_parquet")
       
-   */
+
 
 
     //A partir de aquí lo dejo comentado porque al no tener un HADOOP_HOME set no puedo hacerlo
@@ -95,21 +99,9 @@ object Chapter4Ejer2departuredelays {
       //.load("src/main/resources/flights/summary-data/csv/*")
 
 
-
-
-
-
-
     // Use JSON
     //val df4 = spark.read.format("json")
     //.load("src/main/resources/flights/summary-data/json/*")
-
-
-
-
-
-
-
 
 
   }
