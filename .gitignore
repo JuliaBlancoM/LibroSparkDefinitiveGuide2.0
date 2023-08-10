@@ -52,7 +52,6 @@ build/
 ### PYTHON ###
 /python/.idea
 
-/python/resources
 
-/python/pyspark_first_demo.py
+
 

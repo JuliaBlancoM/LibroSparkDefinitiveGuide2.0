@@ -30,15 +30,15 @@ object Chapter4Ejer2departuredelays {
       .load()
 
 
-    df.write.saveAsTable("delays")
+    //df.write.saveAsTable("delays")
 
-   /* spark.sql("CREATE DATABASE learn_spark_db")
+   /*spark.sql("CREATE DATABASE learn_spark_db")
     spark.sql("USE learn_spark_db")
 
     df.write.format("parquet")
       .mode("overwrite")
       .option("compression", "snappy")
-      .save("/tmp/data/parquet/df_parquet")
+      .save("/tmp/data/parquet/df_parquet")*/
       
 
 
@@ -47,14 +47,14 @@ object Chapter4Ejer2departuredelays {
 
 
     //Create Managed Table:
-    //spark.sql("CREATE TABLE managed_us_delay_flights_tbl (date STRING, delay INT, distance INT, origin STRING, destination STRING)")
+    spark.sql("CREATE TABLE me_invento_el_nombre (date STRING, delay INT, distance INT, origin STRING, destination STRING)")
     //Hacer lo mismo con la DataFrame API:
     // Path to our US flight delays CSV file
-    //val csv_file = "src/main/resources/departuredelays.csv"
+    val csv_file = "src/main/resources/departuredelays.csv"
     // Schema as defined in the preceding example
-    //val schema = "date STRING, delay INT, distance INT, origin STRING, destination STRING"
-    //val flights_df = spark.read.format("csv").schema(schema).load(csv_file)
-    //flights_df.write.saveAsTable("managed_us_delay_flights_tbl")
+    val schema = "date STRING, delay INT, distance INT, origin STRING, destination STRING"
+    val flights_df = spark.read.format("csv").schema(schema).load(csv_file)
+    flights_df.write.saveAsTable("me_invento_el_nombre")
 
     //Create Unmanaged Table:
     /*spark.sql("""CREATE TABLE us_delay_flights_tbl(date STRING, delay INT, distance INT, origin STRING, destination STRING)

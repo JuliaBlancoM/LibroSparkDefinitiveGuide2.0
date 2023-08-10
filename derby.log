@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Aug 09 11:01:15 CEST 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0189-d987-6133-00000e6800b0 
+Thu Aug 10 09:35:54 CEST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0189-de5f-9aa9-00000f77a000 
 on database directory C:\Users\julia.blanco\Desktop\repositorios\LibroSpark\metastore_db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@368239c8 
 Loaded from file:/C:/Users/julia.blanco/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Amazon.com Inc.
