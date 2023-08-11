@@ -52,6 +52,9 @@ build/
 ### PYTHON ###
 /python/.idea
 
+### METASTORE_DB ###
+/metastore_db
+
 
 
 
