@@ -55,6 +55,9 @@ build/
 ### METASTORE_DB ###
 /metastore_db
 
+### LOGS ###
+*.log
+
 
 
 
