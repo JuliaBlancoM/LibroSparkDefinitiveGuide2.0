@@ -58,6 +58,9 @@ build/
 ### LOGS ###
 *.log
 
+### POM ###
+pom.xml
+
 
 
 
