@@ -1,4 +1,4 @@
-package org.chapter4
+package chapter4
 
 import org.apache.hadoop.shaded.org.jline.keymap.KeyMap.display
 import org.apache.spark.sql.SparkSession

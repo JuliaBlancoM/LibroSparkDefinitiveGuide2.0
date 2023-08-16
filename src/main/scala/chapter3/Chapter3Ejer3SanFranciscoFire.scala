@@ -1,4 +1,4 @@
-package org.chapter3
+package chapter3
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types._

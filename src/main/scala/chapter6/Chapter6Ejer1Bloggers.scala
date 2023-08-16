@@ -1,4 +1,4 @@
-package org.chapter6
+package chapter6
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.expressions.WindowFunctionType.SQL
