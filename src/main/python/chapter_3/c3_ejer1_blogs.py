@@ -20,3 +20,13 @@ data = [[1, "Jules", "Damji", "https://tinyurl.1", "1/4/2016", 4535, ["twitter",
 blogs_df = spark.createDataFrame(data, ddl_schema)
 
 blogs_df.show()
+
+blogs_df.createOrReplaceTempView("blogs")
+
+blogs_df.select(expr("Hits") * 2).show(2)
+
+blogs_df.select(expr("Hits") + expr("Id")).show(truncate=False)
+
+blogs_df.withColumn("Big Hitters", (expr("Hits") > 10000)).show()
+
+blogs_df.withColumn("AuthorsId", (concat(expr("First"), expr("Last"), expr("Id")))).select(expr("AuthorsId")).show(n=4)
