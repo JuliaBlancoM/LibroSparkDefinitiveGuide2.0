@@ -26,14 +26,14 @@ object Chapter5Ejer1 {
     spark.sql("SELECT id, cubed(id) AS id_cubed FROM udf_test").show()
 
     //Load and save to a PostgreSQL database using the Spark SQL datasource API and JDBC in Scala:
-    /*val jdbcDF1 = spark
+    val jdbcDF1 = spark
       .read
       .format("jdbc")
       .option("url", "jdbc:postgresql:[DBSERVER]")
       .option("dbtable", "[SCHEMA].[TABLENAME]")
       .option("user", "USUARIO")
       .option("password", "PASSWORD")
-      .load()*/
+      .load()
 
     import org.apache.spark.sql.Row
     // Create an array dataset
