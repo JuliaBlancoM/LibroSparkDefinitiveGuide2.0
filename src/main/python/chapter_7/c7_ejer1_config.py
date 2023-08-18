@@ -17,6 +17,7 @@ print(spark.conf.isModifiable("spark.sql.shuffle.partitions"))
 spark.conf.get("spark.sql.shuffle.partitions")
 '200'
 
+#PRUEBA EJER CAP 8
 # Step 1: define input sources
 lines = (spark
 .readStream.format("socket")
@@ -27,14 +28,27 @@ lines = (spark
 # Step 2: transform data
 words = lines.select(split(col("value"), "\\s").alias("word"))
 counts = words.groupBy("word").count()
-print(counts)
+
+checkpointDir = "C:/Users/julia.blanco/Desktop/repositorios/LibroSpark/src/main/resources/checkpoint"
+streamingQuery = (counts
+                  .writeStream
+                  .format("console")
+                  .outputMode("complete")
+                  .trigger(processingTime="1 second")
+                  .option("checkpointLocation", checkpointDir)
+                  .start())
+streamingQuery.awaitTermination()
 
 # Step 3: Define Output Sink and Output Mode
 
-writer = counts.writeStream.format("console").outputMode("complete")
+# writer = counts.writeStream.format("console").outputMode("complete")
 
 # Step4: Specify processing details
+'''
 checkpointDir = "C:/Users/julia.blanco/Desktop/repositorios/LibroSpark/src/main/resources/checkpoint"
 writer2 = (writer
 .trigger(processingTime="1 second")
 .option("checkpointLocation", checkpointDir))
+'''
+# Step5: start the query
+# streamingQuery = writer2.start()
